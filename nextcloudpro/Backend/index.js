@@ -1,17 +1,17 @@
-const mongo_DB = require("mongoose")
+const mongoose  = require("mongoose")
 const core = require('cors')
 const express = require("express")
-const { default: mongoose } = require("mongoose")
-const PORT = 8080
+require("dotenv").config();
+const PORT = process.env.PORT || 8080
 const app = express()
 app.use(core());
 app.use(express.json())
-mongo_DB.connect("mongodb+srv://backendpro:b2hUc23siIXW13hX@backendproject.cctxcn8.mongodb.net/?appName=backendproject")
+mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         console.log("Connect mongobd");
     })
     .catch((err) => console.log(err + "monogodb error"))
-const mongoSchema = new mongo_DB.Schema({
+const mongoSchema = new mongoose.Schema({
     userName: String,
     Email: String,
     Password: String
@@ -21,7 +21,7 @@ app.post("/api/user", async (req, res) => {
     try {
 
         const { userName, Email, Password } = req.body;
-        const newUser = await User({ userName, Email, Password });
+        const newUser = new User({ userName, Email, Password });
         await newUser.save();
         res.status(201).json({ message: "user created" })
     } catch (e) {
