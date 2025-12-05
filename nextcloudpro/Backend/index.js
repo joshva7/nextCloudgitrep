@@ -1,11 +1,13 @@
-const mongoose  = require("mongoose")
+const mongoose = require("mongoose")
 const core = require('cors')
 const express = require("express")
+const nodemailer = require("nodemailer")
 require("dotenv").config();
 const PORT = process.env.PORT || 8080
 const app = express()
 app.use(core());
 app.use(express.json())
+
 mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         console.log("Connect mongobd");
@@ -19,16 +21,29 @@ const mongoSchema = new mongoose.Schema({
 const User = mongoose.model("UserInfo", mongoSchema)
 app.post("/api/user", async (req, res) => {
     try {
-
         const { userName, Email, Password } = req.body;
         const newUser = new User({ userName, Email, Password });
         await newUser.save();
-        res.status(201).json({ message: "user created" })
+        const transport = nodemailer.createTransport({
+            host: process.env.BREVO_HOST,
+            port: Number(process.env.BREVO_PORT),
+            secure: false,
+            auth: {
+                user: "9d6ae2001@smtp-brevo.com", // THIS MUST BE smtp-brevo.com login
+                pass: "bskUmXOgcTPz0ns"
+            },
+        });
+        await transport.sendMail({
+            from: process.env.BREVO_SENDER,
+            to: Email,
+            subject: "Successfully create your TunnelStorage account",
+            text: `Hello ${userName} your account is activate to few hourse pleass wait thanks for useing our cloudservices 🐋`
+        });
+        res.status(201).json({ message: "user created & Email send" })
     } catch (e) {
-        res.status(400).send({ message: "error" })
+        console.log(e);
+        return res.status(400).send({ message: `${e} error` })
     }
 })
-app.get("/", (req, res) => {
-    res.send("hello api")
-})
+
 app.listen(PORT, () => console.log(`Server Listen ${PORT}`))
