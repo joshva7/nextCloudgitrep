@@ -30,8 +30,8 @@ app.post("/api/user", async (req, res) => {
             secure: false,
             auth: {
                 // user: "9d6ae2001@smtp-brevo.com", // THIS MUST BE smtp-brevo.com login
-                user:process.env.MAIL_USER,
-                pass:process.env.MAIL_PASS
+                user: process.env.MAIL_USER,
+                pass: process.env.MAIL_PASS
                 // pass: "bskUmXOgcTPz0ns"
             },
         });
@@ -47,7 +47,21 @@ app.post("/api/user", async (req, res) => {
         return res.status(400).send({ message: `${e} error` })
     }
 })
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
     res.status(200).send("home page route")
 })
+app.get("/test-email", async (req, res) => {
+    try {
+        const info = await transport.sendMail({
+            from: process.env.MAIL_SENDER,
+            to: "yourgmail@gmail.com",
+            subject: "SMTP Test",
+            text: "SMTP working!"
+        });
+        res.send(info);
+    } catch (err) {
+        res.send(err);
+    }
+});
+
 app.listen(PORT, () => console.log(`Server Listen ${PORT}`))
