@@ -29,8 +29,10 @@ app.post("/api/user", async (req, res) => {
             port: Number(process.env.MAIL_PORT),
             secure: false,
             auth: {
-                user: "9d6ae2001@smtp-brevo.com", // THIS MUST BE smtp-brevo.com login
-                pass: "bskUmXOgcTPz0ns"
+                // user: "9d6ae2001@smtp-brevo.com", // THIS MUST BE smtp-brevo.com login
+                user:process.env.MAIL_USER,
+                pass:process.env.MAIL_PASS
+                // pass: "bskUmXOgcTPz0ns"
             },
         });
         await transport.sendMail({
