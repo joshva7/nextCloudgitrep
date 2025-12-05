@@ -25,8 +25,8 @@ app.post("/api/user", async (req, res) => {
         const newUser = new User({ userName, Email, Password });
         await newUser.save();
         const transport = nodemailer.createTransport({
-            host: process.env.BREVO_HOST,
-            port: Number(process.env.BREVO_PORT),
+            host: process.env.MAIL_HOST,
+            port: Number(process.env.MAIL_PORT),
             secure: false,
             auth: {
                 user: "9d6ae2001@smtp-brevo.com", // THIS MUST BE smtp-brevo.com login
@@ -34,7 +34,7 @@ app.post("/api/user", async (req, res) => {
             },
         });
         await transport.sendMail({
-            from: process.env.BREVO_SENDER,
+            from: process.env.MAIL_SENDER,
             to: Email,
             subject: "Successfully create your TunnelStorage account",
             text: `Hello ${userName} your account is activate to few hourse pleass wait thanks for useing our cloudservices 🐋`
