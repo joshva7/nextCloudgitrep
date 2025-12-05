@@ -45,5 +45,7 @@ app.post("/api/user", async (req, res) => {
         return res.status(400).send({ message: `${e} error` })
     }
 })
-
+app.get("/",(req,res)=>{
+    res.status(200).send("home page route")
+})
 app.listen(PORT, () => console.log(`Server Listen ${PORT}`))

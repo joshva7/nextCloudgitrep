@@ -1,8 +1,8 @@
 import { useState } from "react"
 const App = () => {
-  const formfiled = useState({
-    name: "", email: "", password: ""
-  })
+  const [userName,setUserName]=useState("")
+  const [userEmail,setUseremail]=useState("")
+  const [userPassword,setUserpassword]=useState("")
   const UserCreated = (e) => {
     e.preventDefault();
 
@@ -13,14 +13,15 @@ const App = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: name,
-          Email: email,
-          Password: password
+          username: userName,
+          Email: userEmail,
+          Password: userPassword
         }),
       }).then((res) => console.log(res))
     } catch (e) {
       console.log(e);
     }
+    console.log(userName,userEmail,userPassword);    
   }
   return (
     <div className=' bg-black text-white h-screen'>
@@ -30,10 +31,10 @@ const App = () => {
       </div>
       <main>
         <form className=' mt-10 mx-10 flex flex-col gap-5' onSubmit={UserCreated}>
-          <input type='text' placeholder='Name' className=' border-2 outline-none rounded-[13px] ring-0 px-5 py-1 border-indigo-600' />
-          <input type='text' placeholder='Email' className=' border-2 outline-none rounded-[13px] space-y-3 ring-0 px-5 py-1 border-indigo-600' />
-          <input type='text' placeholder='Password' className=' border-2 outline-none rounded-[13px]  ring-0 px-5 py-1 border-indigo-600' />
-          <button className='w-full bg-indigo-700 rounded-full py-2 mt-10 text-white' >Register</button>
+          <input type='text' onChange={(e)=>setUserName(e.target.value)} placeholder='Name' className=' border-2 outline-none rounded-[13px] ring-0 px-5 py-1 border-indigo-600' />
+          <input type='text' onChange={(e)=>setUseremail(e.target.value)} placeholder='Email' className=' border-2 outline-none rounded-[13px] space-y-3 ring-0 px-5 py-1 border-indigo-600' />
+          <input type='text' onChange={(e)=>setUserpassword(e.target.value)} placeholder='Password' className=' border-2 outline-none rounded-[13px]  ring-0 px-5 py-1 border-indigo-600' />
+          <button className='w-full bg-indigo-700 rounded-full py-2 mt-10 text-white'>Register</button>
         </form>
       </main>
     </div>
