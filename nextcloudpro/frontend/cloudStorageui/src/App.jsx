@@ -16,7 +16,7 @@ const App = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: userName,
+          userName: userName,
           Email: userEmail,
           Password: userPassword
         }),
