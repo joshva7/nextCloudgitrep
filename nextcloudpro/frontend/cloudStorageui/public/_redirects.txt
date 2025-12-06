@@ -1,4 +1,4 @@
 /*    /index.html   200
-Base directory: frontend/cloudStorageui
+Base directory: nextcloudpro/frontend/cloudStorageui
 Build command: npm run build
 Publish directory: dist
