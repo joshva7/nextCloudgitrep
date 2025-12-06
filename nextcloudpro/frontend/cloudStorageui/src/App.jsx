@@ -1,11 +1,14 @@
 import { useState } from "react"
+import { useShare } from "./Hooks/Sharepropes"
+import { useNavigate } from "react-router-dom"
 const App = () => {
+  const Navegation = useNavigate()
+  const {setUsername}=useShare()
   const [userName,setUserName]=useState("")
   const [userEmail,setUseremail]=useState("")
   const [userPassword,setUserpassword]=useState("")
   const UserCreated = (e) => {
     e.preventDefault();
-
     try {
       fetch("https://nextcloudgitrep.onrender.com/api/user", {
         method: "POST",
@@ -18,6 +21,8 @@ const App = () => {
           Password: userPassword
         }),
       }).then((res) => console.log(res))
+      setUsername(userName)
+      Navegation("/Successpage")
     } catch (e) {
       console.log(e);
     }
@@ -26,11 +31,11 @@ const App = () => {
   return (
     <div className=' bg-black text-white h-screen'>
       <div className=' pt-10 flex flex-col items-center'>
-        <p className='font-bold text-[1.5rem]'>Welcom to TunnelStorage</p>
+        <p className='font-bold text-[1.4rem]'>Welcom to TunnelStorage 🐋</p>
         <p className='font-bold text-2xl'>Register</p>
       </div>
       <main>
-        <form className=' mt-10 mx-10 flex flex-col gap-3' onSubmit={UserCreated}>
+        <form className=' mt-5 mx-10 flex flex-col gap-3' onSubmit={UserCreated}>
           <label>Name</label>
           <input type='text' onChange={(e)=>setUserName(e.target.value)} placeholder='Name' className=' border-2 outline-none rounded-[13px] ring-0 px-5 py-1 border-indigo-600' />
           <label>Email</label>
